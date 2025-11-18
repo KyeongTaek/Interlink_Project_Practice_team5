@@ -17,6 +17,13 @@ public class MainMenuController : MonoBehaviour
         SceneManager.LoadScene("Record");
     }
 
+    // Stage1 진입
+    public void OnClickStage1()
+    {
+        SceneManager.LoadScene("Stage1");
+    }
+
+
     public GameObject quitPanel;
 
     // 게임 종료 버튼 연결 함수
