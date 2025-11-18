@@ -17,14 +17,32 @@ public class MainMenuController : MonoBehaviour
         SceneManager.LoadScene("Record");
     }
 
+    public GameObject quitPanel;
+
     // 게임 종료 버튼 연결 함수
     void Update()
     {
         if (Input.GetKeyDown(KeyCode.Escape))
         {
-            Debug.Log("ESC 키 눌림 확인!");
-            GameQuit();
+            if (quitPanel.activeSelf)
+            {
+                CloseQuitPanel();
+            }
+            else
+            {
+                ShowQuitPanel();
+            }
         }
+    }
+
+    public void ShowQuitPanel()
+    {
+        quitPanel.SetActive(true);
+    }
+
+    public void CloseQuitPanel()
+    {
+        quitPanel.SetActive(false);
     }
 
     public void GameQuit()
