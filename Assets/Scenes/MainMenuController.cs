@@ -23,6 +23,30 @@ public class MainMenuController : MonoBehaviour
         SceneManager.LoadScene("Stage1");
     }
 
+    // Stage2 진입
+    public void OnClickStage2()
+    {
+        SceneManager.LoadScene("Stage2");
+    }
+
+    // Stage3 진입
+    public void OnClickStage3()
+    {
+        SceneManager.LoadScene("Stage3");
+    }
+
+    // Stage4 진입
+    public void OnClickStage4()
+    {
+        SceneManager.LoadScene("Stage4");
+    }
+
+    // Stage5 진입
+    public void OnClickStage5()
+    {
+        SceneManager.LoadScene("Stage5");
+    }
+
 
     public GameObject quitPanel;
 
