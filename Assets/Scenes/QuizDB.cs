@@ -12,9 +12,9 @@ public class QuizDB
     }
 
     // 문제 리스트 불러오기
-    public List<string> LoadQuestions()
+    public List<KeyValuePair<int, string>> LoadQuestions()
     {
-        List<string> questions = new List<string>();
+        List<KeyValuePair<int, string>> questions = new List<KeyValuePair<int, string>>();
 
         using (IDbConnection conn = new SqliteConnection(GetDBPath()))
         {
@@ -22,13 +22,15 @@ public class QuizDB
             using (IDbCommand cmd = conn.CreateCommand())
             {
                 //cmd.CommandText = "SELECT question FROM Quiz";
-                cmd.CommandText = "SELECT content FROM Question";
+                cmd.CommandText = "SELECT question_id, content FROM Question";
                 using (IDataReader reader = cmd.ExecuteReader())
                 {
                     while (reader.Read())
                     {
-                        string q = reader.GetString(0);
-                        questions.Add(q);
+                        int id = reader.GetInt32(0);
+                        string q = reader.GetString(1);
+                        KeyValuePair<int, string> pair = new KeyValuePair<int, string>(id, q);
+                        questions.Add(pair);
                     }
                 }
             }
