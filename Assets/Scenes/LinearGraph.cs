@@ -1,33 +1,36 @@
 using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
+using System;
+using System.Data;
+using Mono.Data.Sqlite;
 
 public class LinearGraph : MonoBehaviour
 {
-    [Header("연결 설정")]
+    [Header("?�결 ?�정")]
     [SerializeField] private RectTransform graphContainer;
     [SerializeField] private Sprite circleSprite;
     [SerializeField] private RectTransform labelYTemplate;
     [SerializeField] private Image guidelineTemplate;
-    [SerializeField] private RectTransform labelXTemplate; // [추가] X축 라벨 템플릿
+    [SerializeField] private RectTransform labelXTemplate; // [추�?] X�??�벨 ?�플�?
 
-    [Header("정답률 데이터 (0 ~ 100)")]
+    [Header("?�답�??�이??(0 ~ 100)")]
     public float[] answerRates;
 
-    [Header("X축 설정")] // [추가]
-    public string[] xAxisLabels; // 구역 이름 텍스트 (예: "구역 1", "구역 2", "구역 3")
-    public float xAxisLabelOffset = 20f; // X축 라벨이 그래프에서 아래로 떨어지는 거리
+    [Header("X�??�정")] // [추�?]
+    public string[] xAxisLabels; // 구역 ?�름 ?�스??(?? "구역 1", "구역 2", "구역 3")
+    public float xAxisLabelOffset = 20f; // X�??�벨??그래?�에???�래�??�어지??거리
 
-    [Header("디자인 옵션")]
+    [Header("?�자???�션")]
     public Color graphColor = Color.green;
     public float dotSize = 20f;
     public float lineThickness = 7f;
 
-    [Header("여백 설정")]
+    [Header("?�백 ?�정")]
     public float verticalPaddingRatio = 0.03f;
     public float horizontalPaddingRatio = 0.03f;
 
-    [Header("Y축 설정")]
+    [Header("Y�??�정")]
     public int yAxisInterval = 10;
     public float yAxisLabelOffset = 50f;
     public Color guidelineColor = new Color(0, 0, 0, 0.5f);
@@ -35,31 +38,54 @@ public class LinearGraph : MonoBehaviour
 
     private void Start()
     {
-        // 템플릿 비활성화 확인
+        // ?�플�?비활?�화 ?�인
         if (labelYTemplate != null) labelYTemplate.gameObject.SetActive(false);
         if (guidelineTemplate != null) guidelineTemplate.gameObject.SetActive(false);
-        if (labelXTemplate != null) labelXTemplate.gameObject.SetActive(false); // [추가]
+        if (labelXTemplate != null) labelXTemplate.gameObject.SetActive(false); // [추�?]
 
-        if (answerRates != null && answerRates.Length > 0)
-            ShowGraph(answerRates);
-        else
-            ShowGraph(new float[] { 10, 50, 30 }); // 3개 요소 테스트용
+
+        // load from db
+        float[] test = new float[3];
+        
+        string sceneName = graphContainer.gameObject.name;
+        if (sceneName == "Scenario1")
+        {
+            test = LoadData(1);
+        }
+        else if (sceneName == "Scenario2")
+        {
+            test = LoadData(2);
+        }
+        else if (sceneName == "Scenario3")
+        {
+            test = LoadData(3);
+        }
+        else if (sceneName == "Total")
+        {
+            test = LoadData();
+        }
+        ShowGraph(test);
+
+        //if (answerRates != null && answerRates.Length > 0)
+        //    ShowGraph(answerRates);
+        //else
+        //    ShowGraph(new float[] { 10, 50, 30 }); // 3�??�소 ?�스?�용
     }
 
     public void ShowGraph(float[] valueList)
     {
-        // 기존 그래프 요소들 삭제 (생략)
+        // 기존 그래???�소????�� (?�략)
         foreach (Transform child in graphContainer)
         {
             if (child.gameObject == labelYTemplate.gameObject ||
                 child.gameObject == guidelineTemplate.gameObject ||
-                child.gameObject == labelXTemplate.gameObject) continue; // [수정]
+                child.gameObject == labelXTemplate.gameObject) continue; // [?�정]
             Destroy(child.gameObject);
         }
 
         if (graphContainer == null || valueList.Length == 0) return;
 
-        // 1. 전체 높이/너비 및 여백 계산
+        // 1. ?�체 ?�이/?�비 �??�백 계산
         float containerHeight = graphContainer.rect.height;
         float containerWidth = graphContainer.rect.width;
 
@@ -77,21 +103,21 @@ public class LinearGraph : MonoBehaviour
 
         GameObject lastCircle = null;
 
-        // Y축 라벨 및 가이드 라인 생성
+        // Y�??�벨 �?가?�드 ?�인 ?�성
         for (int i = 0; i <= yMaximum; i += yAxisInterval)
         {
             float yPosition = (i / yMaximum) * effectiveGraphHeight + yOffset;
 
-            // 라벨 생성
+            // ?�벨 ?�성
             CreateYAxisLabel(i.ToString(), new Vector2(xOffset - yAxisLabelOffset, yPosition));
 
-            // 가이드 라인 생성 (0점 라인은 제외하거나 다르게 표현 가능)
-            if (i >= 0) // 0점 라인은 그리지 않거나 필요에 따라 추가
+            // 가?�드 ?�인 ?�성 (0???�인?� ?�외?�거???�르�??�현 가??
+            if (i >= 0) // 0???�인?� 그리지 ?�거???�요???�라 추�?
             {
                 CreateGuideline(new Vector2(xOffset, yPosition), effectiveGraphWidth);
             }
         }
-        // 그래프 점 및 선 그리기 + X축 라벨 생성
+        // 그래????�???그리�?+ X�??�벨 ?�성
         for (int i = 0; i < valueList.Length; i++)
         {
             float xPosition = xOffset + (i + 1) * xSize;
@@ -99,10 +125,10 @@ public class LinearGraph : MonoBehaviour
 
             GameObject circle = CreateCircle(new Vector2(xPosition, yPosition));
 
-            // [추가] X축 라벨 생성 (데이터 개수와 라벨 개수가 맞아야 함)
+            // [추�?] X�??�벨 ?�성 (?�이??개수?� ?�벨 개수가 맞아????
             if (xAxisLabels != null && xAxisLabels.Length > i)
             {
-                // 라벨 위치는 그래프 아래쪽 여백(yOffset)에서 다시 아래로 xAxisLabelOffset 만큼 이동
+                // ?�벨 ?�치??그래???�래�??�백(yOffset)?�서 ?�시 ?�래�?xAxisLabelOffset 만큼 ?�동
                 Vector2 labelPosition = new Vector2(xPosition, yOffset - xAxisLabelOffset);
                 CreateXAxisLabel(xAxisLabels[i], labelPosition);
             }
@@ -116,24 +142,24 @@ public class LinearGraph : MonoBehaviour
         }
     }
 
-    // ... (CreateCircle, CreateDotConnection, CreateYAxisLabel 함수는 생략 / 변경 없음)
+    // ... (CreateCircle, CreateDotConnection, CreateYAxisLabel ?�수???�략 / 변�??�음)
 
-    // [새 함수] X축 라벨 생성
+    // [???�수] X�??�벨 ?�성
     private void CreateXAxisLabel(string labelText, Vector2 anchoredPosition)
     {
-        if (labelXTemplate == null) { Debug.LogError("X축 라벨 템플릿이 설정되지 않았습니다."); return; }
+        if (labelXTemplate == null) { Debug.LogError("X�??�벨 ?�플릿이 ?�정?��? ?�았?�니??"); return; }
 
         GameObject labelObj = Instantiate(labelXTemplate.gameObject, graphContainer);
         labelObj.SetActive(true);
         RectTransform rect = labelObj.GetComponent<RectTransform>();
         TextMeshProUGUI tmpText = labelObj.GetComponent<TextMeshProUGUI>();
 
-        if (tmpText == null) { Debug.LogError("X축 라벨 템플릿에 TextMeshProUGUI 컴포넌트가 없습니다."); return; }
+        if (tmpText == null) { Debug.LogError("X�??�벨 ?�플릿에 TextMeshProUGUI 컴포?�트가 ?�습?�다."); return; }
 
         tmpText.text = labelText;
         tmpText.fontSize = labelFontSize;
         tmpText.color = Color.black;
-        tmpText.alignment = TextAlignmentOptions.Center; // [중요] 중앙 정렬
+        tmpText.alignment = TextAlignmentOptions.Center; // [중요] 중앙 ?�렬
 
         rect.anchoredPosition = anchoredPosition;
         rect.sizeDelta = new Vector2(150, labelFontSize * 1.5f);
@@ -176,43 +202,103 @@ public class LinearGraph : MonoBehaviour
         rect.localEulerAngles = new Vector3(0, 0, angle);
     }
 
-    // [새 함수] Y축 라벨 생성
+    // [???�수] Y�??�벨 ?�성
     private void CreateYAxisLabel(string labelText, Vector2 anchoredPosition)
     {
-        if (labelYTemplate == null) { Debug.LogError("Y축 라벨 템플릿이 설정되지 않았습니다."); return; }
+        if (labelYTemplate == null) { Debug.LogError("Y�??�벨 ?�플릿이 ?�정?��? ?�았?�니??"); return; }
 
         GameObject labelObj = Instantiate(labelYTemplate.gameObject, graphContainer);
         labelObj.SetActive(true);
         RectTransform rect = labelObj.GetComponent<RectTransform>();
         TextMeshProUGUI tmpText = labelObj.GetComponent<TextMeshProUGUI>();
 
-        if (tmpText == null) { Debug.LogError("Y축 라벨 템플릿에 TextMeshProUGUI 컴포넌트가 없습니다."); return; }
+        if (tmpText == null) { Debug.LogError("Y�??�벨 ?�플릿에 TextMeshProUGUI 컴포?�트가 ?�습?�다."); return; }
 
         tmpText.text = labelText;
         tmpText.fontSize = labelFontSize;
-        tmpText.color = Color.black; // 라벨 색상
-        tmpText.alignment = TextAlignmentOptions.Right; // 오른쪽 정렬 (그래프에서 왼쪽으로 나오게)
+        tmpText.color = Color.black; // ?�벨 ?�상
+        tmpText.alignment = TextAlignmentOptions.Right; // ?�른�??�렬 (그래?�에???�쪽?�로 ?�오�?
 
         rect.anchoredPosition = anchoredPosition;
-        rect.sizeDelta = new Vector2(100, labelFontSize * 1.5f); // 라벨 크기
+        rect.sizeDelta = new Vector2(100, labelFontSize * 1.5f); // ?�벨 ?�기
         rect.anchorMin = new Vector2(0, 0);
         rect.anchorMax = new Vector2(0, 0);
     }
 
-    // [새 함수] 가이드 라인 생성
+    // [???�수] 가?�드 ?�인 ?�성
     private void CreateGuideline(Vector2 startPosition, float width)
     {
-        if (guidelineTemplate == null) { Debug.LogError("가이드 라인 템플릿이 설정되지 않았습니다."); return; }
+        if (guidelineTemplate == null) { Debug.LogError("가?�드 ?�인 ?�플릿이 ?�정?��? ?�았?�니??"); return; }
 
         GameObject lineObj = Instantiate(guidelineTemplate.gameObject, graphContainer);
         lineObj.SetActive(true);
-        lineObj.GetComponent<Image>().color = guidelineColor; // 투명도 있는 색상
+        lineObj.GetComponent<Image>().color = guidelineColor; // ?�명???�는 ?�상
 
         RectTransform rect = lineObj.GetComponent<RectTransform>();
-        rect.anchoredPosition = new Vector2(startPosition.x + width / 2, startPosition.y); // 라인 중앙 정렬
-        rect.sizeDelta = new Vector2(width, 2f); // 라인 길이와 두께
+        rect.anchoredPosition = new Vector2(startPosition.x + width / 2, startPosition.y); // ?�인 중앙 ?�렬
+        rect.sizeDelta = new Vector2(width, 2f); // ?�인 길이?� ?�께
         rect.anchorMin = new Vector2(0, 0);
         rect.anchorMax = new Vector2(0, 0);
     }
-    // ... (기존 CreateCircle, CreateDotConnection, CreateYAxisLabel, CreateGuideline 함수 포함)
+    // ... (기존 CreateCircle, CreateDotConnection, CreateYAxisLabel, CreateGuideline ?�수 ?�함)
+
+    // load from db(scenario ver)
+    private float[] LoadData(int sceneNum)
+    {
+        float[] rates = new float[3];
+
+        string dbname = "/test.db";
+        string connectionString = "URI=file:" + Application.streamingAssetsPath + dbname;
+        IDbConnection dbConnection = new SqliteConnection(connectionString);
+        dbConnection.Open();
+
+        string tablename = "Record";
+
+        IDbCommand dbCommand = dbConnection.CreateCommand();
+
+        dbCommand.CommandText = "SELECT rate_stage_" + (2*sceneNum-1) + " FROM " + tablename + " ORDER BY session_id DESC LIMIT 3"; // get scenario rate(1 or 2 or 3) for latest 3 session
+        Debug.Log(dbCommand.CommandText);
+
+        IDataReader dataReader = dbCommand.ExecuteReader();
+
+        int cnt = 0;
+        while (dataReader.Read())
+        {
+            float rateStage = dataReader.GetFloat(0);
+            rates[cnt++] = rateStage;
+        }
+        dataReader.Close();
+
+        return rates;
+    }
+    
+    // load from db(total ver)
+    private float[] LoadData()
+    {
+        float[] rates = new float[3];
+
+        string dbname = "/test.db";
+        string connectionString = "URI=file:" + Application.streamingAssetsPath + dbname;
+        IDbConnection dbConnection = new SqliteConnection(connectionString);
+        dbConnection.Open();
+
+        string tablename = "Record";
+
+        IDbCommand dbCommand = dbConnection.CreateCommand();
+
+        dbCommand.CommandText = "SELECT rate_total FROM " + tablename + " ORDER BY session_id DESC LIMIT 3"; // get scenario rate(1 or 2 or 3) for latest 3 session
+        Debug.Log(dbCommand.CommandText);
+
+        IDataReader dataReader = dbCommand.ExecuteReader();
+
+        int cnt = 0;
+        while (dataReader.Read())
+        {
+            float rateStage = dataReader.GetFloat(0);
+            rates[cnt++] = rateStage;
+        }
+        dataReader.Close();
+
+        return rates;
+    }
 }
