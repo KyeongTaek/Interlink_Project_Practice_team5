@@ -1,14 +1,17 @@
 using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
+using System;
+using System.Data;
+using Mono.Data.Sqlite;
 
 public class ImageSwitcher_MultiEnd : MonoBehaviour
 {
     void Start()
     {
-        float testrate = 40f;
-        UpdateZone(testrate);
-    } //임시 테스트용
+        float rate = LoadData();
+        UpdateZone(rate);
+    }
 
     [Header("Zone Target")]
     public Image zoneImage;
@@ -53,4 +56,29 @@ public class ImageSwitcher_MultiEnd : MonoBehaviour
         Debug.Log($"Zone 1 정답률 ({rate}%) 적용 완료.");
     }
 
+    public float LoadData()
+    {
+        float latestRate = 0f;
+
+        string connectionString = "URI=file:" + Application.streamingAssetsPath + "/test.db";
+        IDbConnection dbConnection = new SqliteConnection(connectionString);
+        dbConnection.Open();
+
+        string tablename = "Record";
+
+        IDbCommand dbCommand = dbConnection.CreateCommand();
+        dbCommand.CommandText = "SELECT rate_total FROM " + tablename + " ORDER BY session_id DESC LIMIT 1";
+
+        IDataReader dataReader = dbCommand.ExecuteReader();
+
+        if (dataReader.Read())
+        {
+            latestRate = dataReader.GetFloat(0);
+        }
+
+        dataReader.Close();
+        dbConnection.Close();
+
+        return latestRate;
+    }
 }
