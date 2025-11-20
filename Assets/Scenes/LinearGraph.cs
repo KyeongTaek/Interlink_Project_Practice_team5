@@ -4,6 +4,7 @@ using TMPro;
 using System;
 using System.Data;
 using Mono.Data.Sqlite;
+using System.Collections.Generic;
 
 public class LinearGraph : MonoBehaviour
 {
@@ -245,7 +246,7 @@ public class LinearGraph : MonoBehaviour
     // load from db(scenario ver)
     private float[] LoadData(int sceneNum)
     {
-        float[] rates = new float[3];
+        System.Collections.Generic.List<float> rateList = new System.Collections.Generic.List<float>();  
 
         string dbname = "/test.db";
         string connectionString = "URI=file:" + Application.streamingAssetsPath + dbname;
@@ -261,21 +262,23 @@ public class LinearGraph : MonoBehaviour
 
         IDataReader dataReader = dbCommand.ExecuteReader();
 
-        int cnt = 0;
         while (dataReader.Read())
         {
             float rateStage = dataReader.GetFloat(0);
-            rates[cnt++] = rateStage;
+            rateList.Add(rateStage);
         }
         dataReader.Close();
+        dbConnection.Close();
 
-        return rates;
+        rateList.Reverse();
+
+        return rateList.ToArray();
     }
     
     // load from db(total ver)
     private float[] LoadData()
     {
-        float[] rates = new float[3];
+        System.Collections.Generic.List<float> rateList = new System.Collections.Generic.List<float>();
 
         string dbname = "/test.db";
         string connectionString = "URI=file:" + Application.streamingAssetsPath + dbname;
@@ -291,14 +294,16 @@ public class LinearGraph : MonoBehaviour
 
         IDataReader dataReader = dbCommand.ExecuteReader();
 
-        int cnt = 0;
         while (dataReader.Read())
         {
             float rateStage = dataReader.GetFloat(0);
-            rates[cnt++] = rateStage;
+            rateList.Add(rateStage);
         }
         dataReader.Close();
+        dbConnection.Close();
 
-        return rates;
+        rateList.Reverse();
+
+        return rateList.ToArray();
     }
 }
