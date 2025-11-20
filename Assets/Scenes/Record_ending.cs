@@ -1,13 +1,17 @@
 using UnityEngine;
 using UnityEngine.UI;
+using System;
+using System.Data;
+using Mono.Data.Sqlite;
 
 public class ImageSwitcher : MonoBehaviour
 {
     void Start()
     {
-        UpdateZone1(40f);
-        UpdateZone2(60f);
-        UpdateZone3(85f);
+        float[] rates = LoadData();
+        UpdateZone1(rates[0]); // 40f
+        UpdateZone2(rates[1]); // 60f
+        UpdateZone3(rates[2]); // 85f
     } //임시 테스트용
     // ▼▼▼ 1. 구역별 UI Image 컴포넌트 변수 (3개) ▼▼▼
     [Header("Zone Targets")]
@@ -61,5 +65,33 @@ public class ImageSwitcher : MonoBehaviour
     {
         SetImageBasedOnRate(zone3Image, rate);
         Debug.Log($"Zone 3 정답률 ({rate}%) 적용 완료.");
+    }
+
+    // ------------------------------------------------------------------
+    // ▼▼▼ 4. DB에서 정답률 가져오기 ▼▼▼
+    // ------------------------------------------------------------------ 
+
+    public float[] LoadData()
+    {
+        float[] rates = new float[3];
+
+        string connectionString = "URI=file:" + Application.streamingAssetsPath + "/test.db";
+        IDbConnection dbConnection = new SqliteConnection(connectionString);
+        dbConnection.Open();
+
+        string tablename = "Record";
+
+        IDbCommand dbCommand = dbConnection.CreateCommand();
+        dbCommand.CommandText = "SELECT rate_total FROM " + tablename + " ORDER BY session_id DESC LIMIT 3"; // 최근 3개(최대)의 세션만 가져오기
+        IDataReader dataReader = dbCommand.ExecuteReader();
+
+        int cnt = 0;
+        while (dataReader.Read())
+        {
+            float rateSession = dataReader.GetFloat(0);
+            rates[cnt++] = rateSession;
+        }
+        
+        return rates;
     }
 }

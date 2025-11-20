@@ -1,17 +1,25 @@
 using UnityEngine;
 using UnityEngine.UI;
-using TMPro; // 텍스트를 위한 TextMeshPro 사용 (설치 필요)
+using TMPro;
+using System;
+using System.Data;
+using Mono.Data.Sqlite;
 
 public class LinearGraph : MonoBehaviour
 {
     [Header("연결 설정")]
     [SerializeField] private RectTransform graphContainer;
     [SerializeField] private Sprite circleSprite;
-    [SerializeField] private RectTransform labelYTemplate; // Y축 라벨 템플릿
-    [SerializeField] private Image guidelineTemplate; // 가이드 라인 템플릿
+    [SerializeField] private RectTransform labelYTemplate;
+    [SerializeField] private Image guidelineTemplate;
+    [SerializeField] private RectTransform labelXTemplate; // [추가] X축 라벨 템플릿
 
-    [Header("정답률 데이터 (0 ~ 100)")]
+    [Header("정답률 데이터(0 ~ 100)")]
     public float[] answerRates;
+
+    [Header("X축 설정")] // [추가]
+    public string[] xAxisLabels; // 구역 이름 텍스트 (예: "구역 1", "구역 2", "구역 3")
+    public float xAxisLabelOffset = 20f; // X축 라벨이 그래프에서 아래로 떨어지는 거리
 
     [Header("디자인 옵션")]
     public Color graphColor = Color.green;
@@ -19,36 +27,59 @@ public class LinearGraph : MonoBehaviour
     public float lineThickness = 7f;
 
     [Header("여백 설정")]
-    public float verticalPaddingRatio = 0.03f; // 상하 여백 비율
-    public float horizontalPaddingRatio = 0.03f; // [추가] 좌우 여백 비율
+    public float verticalPaddingRatio = 0.03f;
+    public float horizontalPaddingRatio = 0.03f;
 
     [Header("Y축 설정")]
-    public int yAxisInterval = 10; // Y축 텍스트/라인 간격 (예: 10, 20)
-    public float yAxisLabelOffset = 40f; // Y축 라벨이 그래프에서 떨어지는 거리
-    public Color guidelineColor = new Color(0, 0, 0, 1f); // 가이드 라인 색상 (투명한 흰색)
-    public float labelFontSize = 22f; // 라벨 폰트 크기
+    public int yAxisInterval = 10;
+    public float yAxisLabelOffset = 50f;
+    public Color guidelineColor = new Color(0, 0, 0, 0.5f);
+    public float labelFontSize = 21f;
 
     private void Start()
     {
-        // TextMeshPro가 없으면 에러 발생 가능성 -> TMP를 먼저 설치하세요.
+        // 템플릿 비활성화 확인
         if (labelYTemplate != null) labelYTemplate.gameObject.SetActive(false);
         if (guidelineTemplate != null) guidelineTemplate.gameObject.SetActive(false);
+        if (labelXTemplate != null) labelXTemplate.gameObject.SetActive(false); // [추가]
 
 
-        if (answerRates != null && answerRates.Length > 0)
-            ShowGraph(answerRates);
-        else
-            ShowGraph(new float[] { 10, 50, 30, 80, 100 }); // 테스트용
+        // load from db
+        float[] test = new float[3];
+        
+        string sceneName = graphContainer.gameObject.name;
+        if (sceneName == "Scenario1")
+        {
+            test = LoadData(1);
+        }
+        else if (sceneName == "Scenario2")
+        {
+            test = LoadData(2);
+        }
+        else if (sceneName == "Scenario3")
+        {
+            test = LoadData(3);
+        }
+        else if (sceneName == "Total")
+        {
+            test = LoadData();
+        }
+        ShowGraph(test);
+
+        //if (answerRates != null && answerRates.Length > 0)
+        //    ShowGraph(answerRates);
+        //else
+        //    ShowGraph(new float[] { 10, 50, 30 }); // 3개 요소 테스트용
     }
 
     public void ShowGraph(float[] valueList)
     {
-        // 기존 그래프 요소들 삭제
+        // 기존 그래프 요소들 삭제 (생략)
         foreach (Transform child in graphContainer)
         {
-            // 템플릿은 삭제하면 안 되므로 예외 처리
             if (child.gameObject == labelYTemplate.gameObject ||
-                child.gameObject == guidelineTemplate.gameObject) continue;
+                child.gameObject == guidelineTemplate.gameObject ||
+                child.gameObject == labelXTemplate.gameObject) continue; // [수정]
             Destroy(child.gameObject);
         }
 
@@ -59,16 +90,16 @@ public class LinearGraph : MonoBehaviour
         float containerWidth = graphContainer.rect.width;
 
         float verticalPadding = containerHeight * verticalPaddingRatio;
-        float horizontalPadding = containerWidth * horizontalPaddingRatio; // [추가]
+        float horizontalPadding = containerWidth * horizontalPaddingRatio;
 
         float effectiveGraphHeight = containerHeight - (verticalPadding * 2);
-        float effectiveGraphWidth = containerWidth - (horizontalPadding * 2); // [추가]
+        float effectiveGraphWidth = containerWidth - (horizontalPadding * 2);
 
         float yOffset = verticalPadding;
-        float xOffset = horizontalPadding; // [추가]
+        float xOffset = horizontalPadding;
 
         float yMaximum = 100f;
-        float xSize = effectiveGraphWidth / (valueList.Length + 1); // [수정] 유효 너비 사용
+        float xSize = effectiveGraphWidth / (valueList.Length + 1);
 
         GameObject lastCircle = null;
 
@@ -81,19 +112,26 @@ public class LinearGraph : MonoBehaviour
             CreateYAxisLabel(i.ToString(), new Vector2(xOffset - yAxisLabelOffset, yPosition));
 
             // 가이드 라인 생성 (0점 라인은 제외하거나 다르게 표현 가능)
-            if (i > 0) // 0점 라인은 그리지 않거나 필요에 따라 추가
+            if (i >= 0) // 0점 라인은 그리지 않거나 필요에 따라 추가
             {
                 CreateGuideline(new Vector2(xOffset, yPosition), effectiveGraphWidth);
             }
         }
-
-        // 그래프 점 및 선 그리기
+        // 그래프 점 및 선 그리기 + X축 라벨 생성
         for (int i = 0; i < valueList.Length; i++)
         {
-            float xPosition = xOffset + (i + 1) * xSize; // [수정] xOffset 시작
+            float xPosition = xOffset + (i + 1) * xSize;
             float yPosition = (valueList[i] / yMaximum) * effectiveGraphHeight + yOffset;
 
             GameObject circle = CreateCircle(new Vector2(xPosition, yPosition));
+
+            // [추가] X축 라벨 생성 (데이터 개수와 라벨 개수가 맞아야 함)
+            if (xAxisLabels != null && xAxisLabels.Length > i)
+            {
+                // 라벨 위치는 그래프 아래쪽 여백(yOffset)에서 다시 아래로 xAxisLabelOffset 만큼 이동
+                Vector2 labelPosition = new Vector2(xPosition, yOffset - xAxisLabelOffset);
+                CreateXAxisLabel(xAxisLabels[i], labelPosition);
+            }
 
             if (lastCircle != null)
             {
@@ -102,6 +140,31 @@ public class LinearGraph : MonoBehaviour
             }
             lastCircle = circle;
         }
+    }
+
+    // ... (CreateCircle, CreateDotConnection, CreateYAxisLabel 함수는 생략 / 변경 없음)
+
+    // [새 함수] X축 라벨 생성
+    private void CreateXAxisLabel(string labelText, Vector2 anchoredPosition)
+    {
+        if (labelXTemplate == null) { Debug.LogError("X축 라벨 템플릿이 설정되지 않았습니다."); return; }
+
+        GameObject labelObj = Instantiate(labelXTemplate.gameObject, graphContainer);
+        labelObj.SetActive(true);
+        RectTransform rect = labelObj.GetComponent<RectTransform>();
+        TextMeshProUGUI tmpText = labelObj.GetComponent<TextMeshProUGUI>();
+
+        if (tmpText == null) { Debug.LogError("X축 라벨 템플릿에 TextMeshProUGUI 컴포넌트가 없습니다."); return; }
+
+        tmpText.text = labelText;
+        tmpText.fontSize = labelFontSize;
+        tmpText.color = Color.black;
+        tmpText.alignment = TextAlignmentOptions.Center; // [중요] 중앙 정렬
+
+        rect.anchoredPosition = anchoredPosition;
+        rect.sizeDelta = new Vector2(150, labelFontSize * 1.5f);
+        rect.anchorMin = new Vector2(0, 0);
+        rect.anchorMax = new Vector2(0, 0);
     }
 
     private GameObject CreateCircle(Vector2 anchoredPosition)
@@ -153,7 +216,7 @@ public class LinearGraph : MonoBehaviour
 
         tmpText.text = labelText;
         tmpText.fontSize = labelFontSize;
-        tmpText.color = Color.black ; // 라벨 색상
+        tmpText.color = Color.black; // 라벨 색상
         tmpText.alignment = TextAlignmentOptions.Right; // 오른쪽 정렬 (그래프에서 왼쪽으로 나오게)
 
         rect.anchoredPosition = anchoredPosition;
@@ -176,5 +239,66 @@ public class LinearGraph : MonoBehaviour
         rect.sizeDelta = new Vector2(width, 2f); // 라인 길이와 두께
         rect.anchorMin = new Vector2(0, 0);
         rect.anchorMax = new Vector2(0, 0);
+    }
+    // ... (기존 CreateCircle, CreateDotConnection, CreateYAxisLabel, CreateGuideline 함수 포함)
+
+    // load from db(scenario ver)
+    private float[] LoadData(int sceneNum)
+    {
+        float[] rates = new float[3];
+
+        string dbname = "/test.db";
+        string connectionString = "URI=file:" + Application.streamingAssetsPath + dbname;
+        IDbConnection dbConnection = new SqliteConnection(connectionString);
+        dbConnection.Open();
+
+        string tablename = "Record";
+
+        IDbCommand dbCommand = dbConnection.CreateCommand();
+
+        dbCommand.CommandText = "SELECT rate_stage_" + (2*sceneNum-1) + " FROM " + tablename + " ORDER BY session_id DESC LIMIT 3"; // get scenario rate(1 or 2 or 3) for latest 3 session
+        Debug.Log(dbCommand.CommandText);
+
+        IDataReader dataReader = dbCommand.ExecuteReader();
+
+        int cnt = 0;
+        while (dataReader.Read())
+        {
+            float rateStage = dataReader.GetFloat(0);
+            rates[cnt++] = rateStage;
+        }
+        dataReader.Close();
+
+        return rates;
+    }
+    
+    // load from db(total ver)
+    private float[] LoadData()
+    {
+        float[] rates = new float[3];
+
+        string dbname = "/test.db";
+        string connectionString = "URI=file:" + Application.streamingAssetsPath + dbname;
+        IDbConnection dbConnection = new SqliteConnection(connectionString);
+        dbConnection.Open();
+
+        string tablename = "Record";
+
+        IDbCommand dbCommand = dbConnection.CreateCommand();
+
+        dbCommand.CommandText = "SELECT rate_total FROM " + tablename + " ORDER BY session_id DESC LIMIT 3"; // get scenario rate(1 or 2 or 3) for latest 3 session
+        Debug.Log(dbCommand.CommandText);
+
+        IDataReader dataReader = dbCommand.ExecuteReader();
+
+        int cnt = 0;
+        while (dataReader.Read())
+        {
+            float rateStage = dataReader.GetFloat(0);
+            rates[cnt++] = rateStage;
+        }
+        dataReader.Close();
+
+        return rates;
     }
 }
