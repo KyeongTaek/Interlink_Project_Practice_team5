@@ -7,7 +7,8 @@ public class QuizDB
 {
     private string GetDBPath()
     {
-        return "URI=file:" + Application.streamingAssetsPath + "/Quiz.db";
+        //return "URI=file:" + Application.streamingAssetsPath +"/Quiz.db";
+        return "URI=file:" + Application.streamingAssetsPath + "/test.db";
     }
 
     // 문제 리스트 불러오기
@@ -20,8 +21,8 @@ public class QuizDB
             conn.Open();
             using (IDbCommand cmd = conn.CreateCommand())
             {
-                cmd.CommandText = "SELECT question FROM Quiz";
-
+                //cmd.CommandText = "SELECT question FROM Quiz";
+                cmd.CommandText = "SELECT content FROM Question";
                 using (IDataReader reader = cmd.ExecuteReader())
                 {
                     while (reader.Read())
