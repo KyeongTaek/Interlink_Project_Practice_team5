@@ -5,6 +5,11 @@ using UnityEngine;
 
 public class MainMenuController : MonoBehaviour
 {
+    void Start()
+    {
+        PlayerPrefs.SetInt("ClearedLevel", 1);
+        PlayerPrefs.Save();
+    }
     // 게임 시작 버튼 연결 함수
     public void OnClickStart()
     {

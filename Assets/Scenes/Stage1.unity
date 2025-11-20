@@ -148,7 +148,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 33abde3a0cbe62848bc23d241425cbd0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::tempClear
-  currentStageNumber: 6
+  currentStageNumber: 1
 --- !u!4 &292705629
 Transform:
   m_ObjectHideFlags: 0
