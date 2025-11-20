@@ -67,7 +67,7 @@ public class ImageSwitcher_MultiEnd : MonoBehaviour
         string tablename = "Record";
 
         IDbCommand dbCommand = dbConnection.CreateCommand();
-        dbCommand.CommandText = "SELECT rate_total FROM " + tablename + " ORDER BY session_id DESC LIMIT 1";
+        dbCommand.CommandText = "SELECT rate_total FROM " + tablename + " ORDER BY session_id DESC LIMIT 1 OFFSET 1"; // 계산 추가 시, OFFSET 수정 예정
 
         IDataReader dataReader = dbCommand.ExecuteReader();
 

@@ -2,17 +2,24 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine.SceneManagement; // 씬 이동을 위해 필수
 using UnityEngine;
+using System.Data;
+using Mono.Data.Sqlite;
 
 public class MainMenuController : MonoBehaviour
 {
     void Start()
     {
         PlayerPrefs.SetInt("ClearedLevel", 1);
+        if(PlayerPrefs.HasKey("SessionId"))
+        {
+            PlayerPrefs.DeleteKey("SessionId");
+        }
         PlayerPrefs.Save();
     }
     // 게임 시작 버튼 연결 함수
     public void OnClickStart()
     {
+        CreateSession();
         SceneManager.LoadScene("Game");
     }
 
@@ -88,5 +95,34 @@ public class MainMenuController : MonoBehaviour
         #else
             Application.Quit(); // 실제 게임에서 끄기
         #endif
+    }
+
+    // 세션키 생성하기
+    public void CreateSession()
+    {
+        using (IDbConnection conn = new SqliteConnection("URI=file:" + Application.streamingAssetsPath + "/test.db"))
+        {
+            conn.Open();
+            using (IDbCommand cmd = conn.CreateCommand())
+            {
+                cmd.CommandText = "SELECT session_id FROM Record order by session_id DESC LIMIT 1";
+                int newSessionId = 0;
+                using (IDataReader reader = cmd.ExecuteReader())
+                {
+                    while (reader.Read())
+                    {
+                        newSessionId = reader.GetInt32(0) + 1;
+                        Debug.Log("session_id: " + newSessionId);
+                        PlayerPrefs.SetInt("SessionId", newSessionId);
+                        PlayerPrefs.Save();
+                    }
+                }
+                cmd.CommandText = "INSERT INTO Record VALUES(" + newSessionId + ", null, null, null, null, null, null)";
+                //cmd.ExecuteNonQuery();
+                Debug.Log("sql: " + cmd.CommandText);
+                cmd.Dispose();
+            }
+            conn.Close();
+        }
     }
 }

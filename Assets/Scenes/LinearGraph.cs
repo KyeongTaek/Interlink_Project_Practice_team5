@@ -257,7 +257,7 @@ public class LinearGraph : MonoBehaviour
 
         IDbCommand dbCommand = dbConnection.CreateCommand();
 
-        dbCommand.CommandText = "SELECT rate_stage_" + (2*sceneNum-1) + " FROM " + tablename + " ORDER BY session_id DESC LIMIT 3"; // get scenario rate(1 or 2 or 3) for latest 3 session
+        dbCommand.CommandText = "SELECT rate_stage_" + (2*sceneNum-1) + " FROM " + tablename + " ORDER BY session_id DESC LIMIT 3 OFFSET 1"; // get scenario rate(1 or 2 or 3) for latest 3 session
         Debug.Log(dbCommand.CommandText);
 
         IDataReader dataReader = dbCommand.ExecuteReader();
@@ -289,7 +289,7 @@ public class LinearGraph : MonoBehaviour
 
         IDbCommand dbCommand = dbConnection.CreateCommand();
 
-        dbCommand.CommandText = "SELECT rate_total FROM " + tablename + " ORDER BY session_id DESC LIMIT 3"; // get scenario rate(1 or 2 or 3) for latest 3 session
+        dbCommand.CommandText = "SELECT rate_total FROM " + tablename + " ORDER BY session_id DESC LIMIT 3 OFFSET 1"; // get scenario rate(1 or 2 or 3) for latest 3 session
         Debug.Log(dbCommand.CommandText);
 
         IDataReader dataReader = dbCommand.ExecuteReader();
