@@ -100,3 +100,7 @@ InitTestScene*.unity*
 
 # Model
 *.pt
+
+# API key
+Assets/StreamingAssets/gemini_api_key.txt
+Assets/StreamingAssets/gemini_api_key.txt.meta
