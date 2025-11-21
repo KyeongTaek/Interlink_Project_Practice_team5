@@ -105,3 +105,6 @@ InitTestScene*.unity*
 # API key
 Assets/StreamingAssets/gemini_api_key.txt
 Assets/StreamingAssets/gemini_api_key.txt.meta
+
+# MediaPipe folder
+/Packages/MediaPipeUnityPlugin-all/
