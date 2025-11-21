@@ -37,7 +37,7 @@ public class STT_Manager : MonoBehaviour
         // 2. 키가 없으면 작동 중지
         if (string.IsNullOrEmpty(apiKey))
         {
-            Debug.LogError("❌ API 키가 없습니다! Assets/StreamingAssets/gemini_key.txt 파일을 확인하세요.");
+            Debug.LogError("❌ API 키가 없습니다! Assets/StreamingAssets/gemini_api_key.txt 파일을 확인하세요.");
             return; // 여기서 멈춤
         }
 
