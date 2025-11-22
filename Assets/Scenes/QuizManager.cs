@@ -3,11 +3,13 @@ using System.Collections.Generic;
 using TMPro;
 using System.Data;
 using Mono.Data.Sqlite;
+using UnityEngine.UI;
 
 public class QuizManager : MonoBehaviour
 {
+    public Image questionImageView;
     public TMP_Text questionText;
-
+    public int targetScenarioId = 1;
     private List<KeyValuePair<int, string>> questions;
     private int currentIndex = 0;  // 현재 문제 번호
 
@@ -16,7 +18,8 @@ public class QuizManager : MonoBehaviour
     void Start()
     {
         QuizDB db = new QuizDB();
-        questions = db.LoadQuestions();
+
+        questions = db.LoadQuestions(targetScenarioId);
 
         if (questions.Count > 0)
         {
@@ -24,7 +27,7 @@ public class QuizManager : MonoBehaviour
         }
         else
         {
-            questionText.text = "문제가 없습니다.";
+            questionText.text = "해당 시나리오에 문제가 없습니다.";
         }
     }
 
@@ -57,13 +60,31 @@ public class QuizManager : MonoBehaviour
     public void ShowQuestion(int index)
     {
         questionText.text = questions[index].Value;
-        Debug.Log("현재 문제: " + questionText.text);
 
-        // 응답 결과가 나왔다고 가정
+        int currentQID = questions[index].Key;
+
+        if (questionImageView != null)
+        {
+            string imagePath = "QuestionImages/Question_" + currentQID;
+            Sprite loadedSprite = Resources.Load<Sprite>(imagePath);
+
+            if (loadedSprite != null)
+            {
+                // 이미지 파일이 있으면 보여줌
+                questionImageView.sprite = loadedSprite;
+                questionImageView.gameObject.SetActive(true);
+            }
+            else
+            {
+                // 이미지 파일이 없으면 숨김
+                questionImageView.sprite = null;
+                questionImageView.gameObject.SetActive(false);
+            }
+        }
+
+        // --- (테스트용 자동 채점 로직 - 나중에 버튼 연결 시 이동 필요) ---
         submitAnswer = 'O';
-        KeyValuePair<int, string> temp = questions[currentIndex];
-        bool rst = CheckAnswer(temp.Key, submitAnswer); // 정답과 비교
-        InsertLog(rst, temp.Key); // 기록 저장
+        CheckAnswer(currentQID, submitAnswer);
     }
 
     // 응답 결과와 정답 비교하는 함수
