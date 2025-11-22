@@ -187,10 +187,12 @@ public class QuizManager : MonoBehaviour
         if (isCorrect) // 정답이라면
         {
             if (CorrectSprite != null) resultButtonImage.sprite = CorrectSprite; // 긍정적 이미지
+            Debug.Log("Good Job");
         }
         else // 오답이라면
         {
             if (IncorrectSprite != null) resultButtonImage.sprite = IncorrectSprite;  // 부정적 이미지
+            Debug.Log("Try again");
         }
         if (resultButtonObj != null)
         {
