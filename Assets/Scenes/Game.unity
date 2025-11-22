@@ -520,7 +520,6 @@ MonoBehaviour:
   - {fileID: 836020669}
   - {fileID: 1587315782}
   - {fileID: 1483352514}
-  - {fileID: 0}
   - {fileID: 198764609}
   moveSpeed: 10
 --- !u!4 &240132433
