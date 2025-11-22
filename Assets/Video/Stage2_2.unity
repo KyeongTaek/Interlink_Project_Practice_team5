@@ -160,9 +160,9 @@ MonoBehaviour:
   m_GameObject: {fileID: 188387311}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: b5b934357cabc054cb527e952b5ec6f6, type: 3}
+  m_Script: {fileID: 11500000, guid: 503a06142d95b334d8ecf2c77786af86, type: 3}
   m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::GameManager
+  m_EditorClassIdentifier: Assembly-CSharp::ReNext2
   videoPanel: {fileID: 234472544}
   finishPanel: {fileID: 1680255948}
   videoPlayer: {fileID: 1421097193}
@@ -437,7 +437,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Texture: {fileID: 8400000, guid: 019c5f20a15f2034d88b919a89bdc3cd, type: 2}
+  m_Texture: {fileID: 8400000, guid: 6df7e408cad73674ba82202e58ff05ce, type: 2}
   m_UVRect:
     serializedVersion: 2
     x: 0
@@ -569,11 +569,11 @@ VideoPlayer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1421097192}
   m_Enabled: 1
-  m_VideoClip: {fileID: 32900000, guid: 507981d0f73d8414d868963bcf9986e0, type: 3}
+  m_VideoClip: {fileID: 32900000, guid: 4639034301d6006478311353ed259606, type: 3}
   m_TargetCameraAlpha: 1
   m_TargetCamera3DLayout: 0
   m_TargetCamera: {fileID: 0}
-  m_TargetTexture: {fileID: 8400000, guid: 019c5f20a15f2034d88b919a89bdc3cd, type: 2}
+  m_TargetTexture: {fileID: 8400000, guid: 6df7e408cad73674ba82202e58ff05ce, type: 2}
   m_TimeReference: 0
   m_TargetMaterialRenderer: {fileID: 0}
   m_TargetMaterialProperty: <noninit>
