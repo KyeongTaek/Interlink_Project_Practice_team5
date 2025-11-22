@@ -35,6 +35,12 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/Scenes/MultiEnding.unity
     guid: 08d39b7ba2139754599e870d05e59172
+  - enabled: 1
+    path: Assets/Video/FireSafetyScene.unity
+    guid: 6e95ee7ae5c5b344cab582b3a4a5b6f1
+  - enabled: 1
+    path: Assets/Video/Scene2.unity
+    guid: 842ae3c2a47fe4a43b5b8650830e14ba
   m_configObjects:
     com.unity.input.settings.actions: {fileID: -944628639613478452, guid: 2bcd2660ca9b64942af0de543d8d7100, type: 3}
   m_UseUCBPForAssetBundles: 0
