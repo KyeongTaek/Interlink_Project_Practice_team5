@@ -1807,6 +1807,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: Main Canvas
       objectReference: {fileID: 0}
+    - target: {fileID: 638421959754964778, guid: 93efae403e764d54f872249da14edfb7, type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 834804460166333833, guid: 93efae403e764d54f872249da14edfb7, type: 3}
       propertyPath: m_Pivot.x
       value: 0
@@ -1901,7 +1905,7 @@ PrefabInstance:
       objectReference: {fileID: 102438112}
     - target: {fileID: 2350512831452008513, guid: 93efae403e764d54f872249da14edfb7, type: 3}
       propertyPath: m_SortingOrder
-      value: 0
+      value: -5
       objectReference: {fileID: 0}
     - target: {fileID: 2951016541400030350, guid: 93efae403e764d54f872249da14edfb7, type: 3}
       propertyPath: m_AnchorMax.y
@@ -1927,6 +1931,14 @@ PrefabInstance:
       propertyPath: m_RaycastTarget
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 6021542115733396304, guid: 93efae403e764d54f872249da14edfb7, type: 3}
+      propertyPath: m_Enabled
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 6360847543764950319, guid: 93efae403e764d54f872249da14edfb7, type: 3}
+      propertyPath: m_Enabled
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 6524874250958022830, guid: 93efae403e764d54f872249da14edfb7, type: 3}
       propertyPath: m_AnchorMax.y
       value: 0
@@ -1943,6 +1955,14 @@ PrefabInstance:
       propertyPath: m_AnchoredPosition.y
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 7598912060706045432, guid: 93efae403e764d54f872249da14edfb7, type: 3}
+      propertyPath: m_Enabled
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 7598912060706045436, guid: 93efae403e764d54f872249da14edfb7, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 7598912060706045437, guid: 93efae403e764d54f872249da14edfb7, type: 3}
       propertyPath: m_LocalScale.x
       value: 1
@@ -1953,6 +1973,10 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7598912060706045437, guid: 93efae403e764d54f872249da14edfb7, type: 3}
       propertyPath: m_LocalScale.z
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 7598912060706045438, guid: 93efae403e764d54f872249da14edfb7, type: 3}
+      propertyPath: m_Enabled
       value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 7598912060706045438, guid: 93efae403e764d54f872249da14edfb7, type: 3}
