@@ -34,7 +34,7 @@ public class MainMenuController : MonoBehaviour
     // Stage2 진입
     public void OnClickStage2()
     {
-        SceneManager.LoadScene("Stage2");
+        SceneManager.LoadScene("Stage2_Intro");
     }
 
     // Stage3 진입
