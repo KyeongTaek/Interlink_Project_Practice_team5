@@ -4,9 +4,20 @@ using TMPro;
 using System.Data;
 using Mono.Data.Sqlite;
 using UnityEngine.UI;
+using UnityEngine.SceneManagement;
 
 public class QuizManager : MonoBehaviour
 {
+    [Header("UI References")]
+    public GameObject resultButtonObj;
+    public Image resultButtonImage;
+
+    [Header("Feedback Sprites")]
+    public Sprite CorrectSprite;
+    public Sprite IncorrectSprite;
+
+    public bool isCorrect = false; // 정답여부(피드백 이미지 처리용)
+
     public Image questionImageView;
     public TMP_Text questionText;
     public int targetScenarioId = 1;
@@ -18,8 +29,12 @@ public class QuizManager : MonoBehaviour
     void Start()
     {
         QuizDB db = new QuizDB();
-
         questions = db.LoadQuestions(targetScenarioId);
+
+        if (resultButtonObj != null)
+        {
+            resultButtonObj.SetActive(false);
+        }
 
         if (questions.Count > 0)
         {
@@ -38,22 +53,28 @@ public class QuizManager : MonoBehaviour
             currentIndex++;
             ShowQuestion(currentIndex);
         }
-        else
+        else // 마지막 문제
         {
             Debug.Log("마지막 문제입니다.");
+            int nextStage = targetScenarioId + 1; // 스테이지 기록 저장
+            if (nextStage > PlayerPrefs.GetInt("ClearedLevel"))
+            {
+                PlayerPrefs.SetInt("ClearedLevel", nextStage);
+                PlayerPrefs.Save();
+            }
+            SceneManager.LoadScene("Game"); // 이동
         }
     }
-
-    public void PrevQuestion()
+    
+    void Update()
     {
-        if (currentIndex > 0)
+        if(Input.GetKeyDown(KeyCode.Return)) // 엔터 누르면
         {
-            currentIndex--;
-            ShowQuestion(currentIndex);
-        }
-        else
-        {
-            Debug.Log("첫 번째 문제입니다.");
+            if (resultButtonObj.activeSelf)
+            {
+                resultButtonObj.SetActive(false);
+                NextQuestion(); // 다음 문제
+            }
         }
     }
 
@@ -81,10 +102,6 @@ public class QuizManager : MonoBehaviour
                 questionImageView.gameObject.SetActive(false);
             }
         }
-
-        // --- [제거] 테스트용 자동 채점 로직 ---
-        // submitAnswer = 'O';
-        // CheckAnswer(currentQID, submitAnswer);
     }
 
     // [추가] PythonConnector가 호출할 답변 제출 및 채점 함수
@@ -94,11 +111,15 @@ public class QuizManager : MonoBehaviour
         int currentQID = questions[currentIndex].Key;
 
         Debug.Log($"비전 인식으로 답변 '{submitAnswer}' 제출됨. 채점을 시작합니다.");
-        bool isCorrect = CheckAnswer(currentQID, submitAnswer);
-        Debug.Log("채점 결과: " + (isCorrect ? "정답" : "오답"));
-
+        bool is_correct = CheckAnswer(currentQID, submitAnswer);
+        Debug.Log("채점 결과: " + (is_correct ? "정답" : "오답"));
+        
         // 채점 결과를 DB에 기록
         InsertLog(isCorrect, currentQID);
+
+        isCorrect = is_correct;
+
+        FeedBack();
     }
 
     // 응답 결과와 정답 비교하는 함수
@@ -156,6 +177,24 @@ public class QuizManager : MonoBehaviour
                 cmd.Dispose();
             }
             conn.Close();
+        }
+    }
+
+    // 피드백 함수
+    public void FeedBack()
+    {
+        // 피드백 이미지를 바꿔주는 부분
+        if (isCorrect) // 정답이라면
+        {
+            if (CorrectSprite != null) resultButtonImage.sprite = CorrectSprite; // 긍정적 이미지
+        }
+        else // 오답이라면
+        {
+            if (IncorrectSprite != null) resultButtonImage.sprite = IncorrectSprite;  // 부정적 이미지
+        }
+        if (resultButtonObj != null)
+        {
+            resultButtonObj.SetActive(true); // 버튼 보이게
         }
     }
 }
