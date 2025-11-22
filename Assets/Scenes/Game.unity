@@ -700,7 +700,7 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 1993279820}
+      - m_Target: {fileID: 0}
         m_TargetAssemblyTypeName: MainMenuController, Assembly-CSharp
         m_MethodName: OnClickStage2
         m_Mode: 1
@@ -991,7 +991,7 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 1993279820}
+      - m_Target: {fileID: 0}
         m_TargetAssemblyTypeName: MainMenuController, Assembly-CSharp
         m_MethodName: OnClickStage5
         m_Mode: 1
@@ -1203,7 +1203,7 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 1993279820}
+      - m_Target: {fileID: 0}
         m_TargetAssemblyTypeName: MainMenuController, Assembly-CSharp
         m_MethodName: OnClickStage4
         m_Mode: 1
@@ -1336,7 +1336,7 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 1993279820}
+      - m_Target: {fileID: 0}
         m_TargetAssemblyTypeName: MainMenuController, Assembly-CSharp
         m_MethodName: OnClickStage3
         m_Mode: 1
@@ -1548,7 +1548,7 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 1993279820}
+      - m_Target: {fileID: 0}
         m_TargetAssemblyTypeName: MainMenuController, Assembly-CSharp
         m_MethodName: OnClickStage1
         m_Mode: 1
@@ -1610,7 +1610,6 @@ GameObject:
   - component: {fileID: 1993279818}
   - component: {fileID: 1993279817}
   - component: {fileID: 1993279816}
-  - component: {fileID: 1993279820}
   m_Layer: 5
   m_Name: Canvas
   m_TagString: Untagged
@@ -1708,19 +1707,6 @@ RectTransform:
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0, y: 0}
---- !u!114 &1993279820
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1993279815}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: fc4f99abcb41dbf4b86ee88b0bce396e, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::MainMenuController
-  quitPanel: {fileID: 0}
 --- !u!1 &2116842288
 GameObject:
   m_ObjectHideFlags: 0
