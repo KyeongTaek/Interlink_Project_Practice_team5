@@ -488,7 +488,7 @@ MonoBehaviour:
     m_NormalColor: {r: 1, g: 1, b: 1, a: 1}
     m_HighlightedColor: {r: 0.9607843, g: 0.9607843, b: 0.9607843, a: 1}
     m_PressedColor: {r: 0.78431374, g: 0.78431374, b: 0.78431374, a: 1}
-    m_SelectedColor: {r: 0.9607843, g: 0.9607843, b: 0.9607843, a: 1}
+    m_SelectedColor: {r: 0, g: 1, b: 0, a: 1}
     m_DisabledColor: {r: 0.78431374, g: 0.78431374, b: 0.78431374, a: 0.5019608}
     m_ColorMultiplier: 1
     m_FadeDuration: 0.1
@@ -889,6 +889,62 @@ PrefabInstance:
       propertyPath: _handLandmarkerResultAnnotationController
       value: 
       objectReference: {fileID: 2042011697}
+    - target: {fileID: 1143310394012163314, guid: 354887b1999853e43b761301a8332a18, type: 3}
+      propertyPath: OnFistGesture.m_PersistentCalls.m_Calls.Array.size
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 1143310394012163314, guid: 354887b1999853e43b761301a8332a18, type: 3}
+      propertyPath: OnSwipeGesture.m_PersistentCalls.m_Calls.Array.size
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 1143310394012163314, guid: 354887b1999853e43b761301a8332a18, type: 3}
+      propertyPath: OnFistGesture.m_PersistentCalls.m_Calls.Array.data[0].m_Mode
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 1143310394012163314, guid: 354887b1999853e43b761301a8332a18, type: 3}
+      propertyPath: OnSwipeGesture.m_PersistentCalls.m_Calls.Array.data[0].m_Mode
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 1143310394012163314, guid: 354887b1999853e43b761301a8332a18, type: 3}
+      propertyPath: OnFistGesture.m_PersistentCalls.m_Calls.Array.data[0].m_Target
+      value: 
+      objectReference: {fileID: 1466674161}
+    - target: {fileID: 1143310394012163314, guid: 354887b1999853e43b761301a8332a18, type: 3}
+      propertyPath: OnSwipeGesture.m_PersistentCalls.m_Calls.Array.data[0].m_Target
+      value: 
+      objectReference: {fileID: 1466674161}
+    - target: {fileID: 1143310394012163314, guid: 354887b1999853e43b761301a8332a18, type: 3}
+      propertyPath: OnFistGesture.m_PersistentCalls.m_Calls.Array.data[0].m_CallState
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 1143310394012163314, guid: 354887b1999853e43b761301a8332a18, type: 3}
+      propertyPath: OnFistGesture.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
+      value: ClickCurrentButton
+      objectReference: {fileID: 0}
+    - target: {fileID: 1143310394012163314, guid: 354887b1999853e43b761301a8332a18, type: 3}
+      propertyPath: OnSwipeGesture.m_PersistentCalls.m_Calls.Array.data[0].m_CallState
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 1143310394012163314, guid: 354887b1999853e43b761301a8332a18, type: 3}
+      propertyPath: OnSwipeGesture.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
+      value: SelectNextButton
+      objectReference: {fileID: 0}
+    - target: {fileID: 1143310394012163314, guid: 354887b1999853e43b761301a8332a18, type: 3}
+      propertyPath: OnFistGesture.m_PersistentCalls.m_Calls.Array.data[0].m_TargetAssemblyTypeName
+      value: MainMenuGestureController, Assembly-CSharp
+      objectReference: {fileID: 0}
+    - target: {fileID: 1143310394012163314, guid: 354887b1999853e43b761301a8332a18, type: 3}
+      propertyPath: OnSwipeGesture.m_PersistentCalls.m_Calls.Array.data[0].m_TargetAssemblyTypeName
+      value: MainMenuGestureController, Assembly-CSharp
+      objectReference: {fileID: 0}
+    - target: {fileID: 1143310394012163314, guid: 354887b1999853e43b761301a8332a18, type: 3}
+      propertyPath: OnFistGesture.m_PersistentCalls.m_Calls.Array.data[0].m_Arguments.m_ObjectArgumentAssemblyTypeName
+      value: UnityEngine.Object, UnityEngine
+      objectReference: {fileID: 0}
+    - target: {fileID: 1143310394012163314, guid: 354887b1999853e43b761301a8332a18, type: 3}
+      propertyPath: OnSwipeGesture.m_PersistentCalls.m_Calls.Array.data[0].m_Arguments.m_ObjectArgumentAssemblyTypeName
+      value: UnityEngine.Object, UnityEngine
+      objectReference: {fileID: 0}
     - target: {fileID: 3700788278690209942, guid: 354887b1999853e43b761301a8332a18, type: 3}
       propertyPath: m_LocalPosition.x
       value: -8.865964
@@ -1170,7 +1226,7 @@ MonoBehaviour:
     m_NormalColor: {r: 1, g: 1, b: 1, a: 1}
     m_HighlightedColor: {r: 0.9607843, g: 0.9607843, b: 0.9607843, a: 1}
     m_PressedColor: {r: 0.78431374, g: 0.78431374, b: 0.78431374, a: 1}
-    m_SelectedColor: {r: 0.9607843, g: 0.9607843, b: 0.9607843, a: 1}
+    m_SelectedColor: {r: 0, g: 1, b: 0, a: 1}
     m_DisabledColor: {r: 0.78431374, g: 0.78431374, b: 0.78431374, a: 0.5019608}
     m_ColorMultiplier: 1
     m_FadeDuration: 0.1
@@ -1409,7 +1465,7 @@ MonoBehaviour:
     m_NormalColor: {r: 1, g: 1, b: 1, a: 1}
     m_HighlightedColor: {r: 0.9607843, g: 0.9607843, b: 0.9607843, a: 1}
     m_PressedColor: {r: 0.78431374, g: 0.78431374, b: 0.78431374, a: 1}
-    m_SelectedColor: {r: 0.9607843, g: 0.9607843, b: 0.9607843, a: 1}
+    m_SelectedColor: {r: 0, g: 1, b: 0, a: 1}
     m_DisabledColor: {r: 0.78431374, g: 0.78431374, b: 0.78431374, a: 0.5019608}
     m_ColorMultiplier: 1
     m_FadeDuration: 0.1
@@ -1479,7 +1535,7 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 889942265}
   m_CullTransparentMesh: 1
---- !u!1 &1306684713
+--- !u!1 &1466674160
 GameObject:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -1487,57 +1543,50 @@ GameObject:
   m_PrefabAsset: {fileID: 0}
   serializedVersion: 6
   m_Component:
-  - component: {fileID: 1306684716}
-  - component: {fileID: 1306684715}
-  - component: {fileID: 1306684714}
+  - component: {fileID: 1466674162}
+  - component: {fileID: 1466674161}
   m_Layer: 0
-  m_Name: SimpleHandGesture
+  m_Name: Gesture_Manager
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!114 &1306684714
+--- !u!114 &1466674161
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1306684713}
+  m_GameObject: {fileID: 1466674160}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 1338ea36ddd57764eb518935e4897e10, type: 3}
+  m_Script: {fileID: 11500000, guid: 473196b216e07584c994d9d475f6c7a8, type: 3}
   m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::SimpleHandGesture
-  swipeSensitivity: 0.1
---- !u!114 &1306684715
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1306684713}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 1338ea36ddd57764eb518935e4897e10, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::SimpleHandGesture
-  swipeSensitivity: 0.1
---- !u!4 &1306684716
+  m_EditorClassIdentifier: Assembly-CSharp::MainMenuGestureController
+  quitPanel: {fileID: 198242734}
+  mainButtons:
+  - {fileID: 2098290046}
+  - {fileID: 1912954826}
+  - {fileID: 889942267}
+  quitPanelButtons:
+  - {fileID: 145467024}
+  - {fileID: 757075945}
+--- !u!4 &1466674162
 Transform:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1306684713}
+  m_GameObject: {fileID: 1466674160}
   serializedVersion: 2
-  m_LocalRotation: {x: -0.021488085, y: -0.45518252, z: -0.2810476, w: 0.8446061}
-  m_LocalPosition: {x: -22.944813, y: -5.713645, z: 0}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 1.15982, y: -0.50837, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
-  m_LocalEulerAnglesHint: {x: -16.987, y: -52.312, z: -28.421}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1510995181
 GameObject:
   m_ObjectHideFlags: 0
@@ -1680,7 +1729,7 @@ MonoBehaviour:
     m_NormalColor: {r: 1, g: 1, b: 1, a: 1}
     m_HighlightedColor: {r: 0.9607843, g: 0.9607843, b: 0.9607843, a: 1}
     m_PressedColor: {r: 0.78431374, g: 0.78431374, b: 0.78431374, a: 1}
-    m_SelectedColor: {r: 0.9607843, g: 0.9607843, b: 0.9607843, a: 1}
+    m_SelectedColor: {r: 0, g: 1, b: 0, a: 1}
     m_DisabledColor: {r: 0.78431374, g: 0.78431374, b: 0.78431374, a: 0.5019608}
     m_ColorMultiplier: 1
     m_FadeDuration: 0.1
@@ -2082,7 +2131,7 @@ MonoBehaviour:
     m_NormalColor: {r: 1, g: 1, b: 1, a: 1}
     m_HighlightedColor: {r: 0.9607843, g: 0.9607843, b: 0.9607843, a: 1}
     m_PressedColor: {r: 0.78431374, g: 0.78431374, b: 0.78431374, a: 1}
-    m_SelectedColor: {r: 0.9607843, g: 0.9607843, b: 0.9607843, a: 1}
+    m_SelectedColor: {r: 0, g: 1, b: 0, a: 1}
     m_DisabledColor: {r: 0.78431374, g: 0.78431374, b: 0.78431374, a: 0.5019608}
     m_ColorMultiplier: 1
     m_FadeDuration: 0.1
@@ -2242,4 +2291,4 @@ SceneRoots:
   - {fileID: 818470911}
   - {fileID: 2042011696}
   - {fileID: 326941314}
-  - {fileID: 1306684716}
+  - {fileID: 1466674162}
