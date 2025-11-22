@@ -17,6 +17,9 @@ public class PythonConnector : MonoBehaviour
     // 이 변수가 카메라를 켜고(Play), 끄고(Stop), 이미지를 받아옵니다.
     private WebCamTexture webCamTexture;
 
+    // [추가] 퀴즈 관리자와 통신하기 위한 변수
+    private QuizManager quizManager;
+
     void Awake()
     {
         // 1. 파이썬 실행 파일 경로 설정
@@ -39,11 +42,20 @@ public class PythonConnector : MonoBehaviour
         UnityEngine.Debug.Log("Python Path: " + pythonExePath);
         UnityEngine.Debug.Log("Script Path: " + scriptPath);
         UnityEngine.Debug.Log("Image Path: " + imagePath);
+
+        // [추가] 씬에서 QuizManager를 자동으로 찾습니다.
+        quizManager = FindFirstObjectByType<QuizManager>();
     }
 
     // [추가] 게임 시작 시 웹캠을 찾아 켜는 함수
     void Start()
     {
+        // [추가] QuizManager를 찾지 못했으면 경고를 표시합니다.
+        if (quizManager == null)
+        {
+            UnityEngine.Debug.LogError("씬에서 QuizManager를 찾을 수 없습니다.");
+        }
+
         // 1. 컴퓨터에 연결된 카메라 장치가 하나라도 있는지 확인
         if (WebCamTexture.devices.Length > 0)
         {
@@ -137,8 +149,19 @@ public class PythonConnector : MonoBehaviour
                     UnityEngine.Debug.Log($"O영역(좌측): {countO}명");
                     UnityEngine.Debug.Log($"X영역(우측): {countX}명");
 
-                    // [활용 예시]
-                    // if (countO > countX) Debug.Log("O가 이겼다!");
+                    // [변경] 분석 결과를 바탕으로 답변 결정 후 QuizManager로 전달
+                    if (quizManager != null)
+                    {
+                        if (countO >= countX)
+                        {
+                            quizManager.SubmitAnswerFromVision('O');
+                        }
+                        else if (countX > countO)
+                        {
+                            quizManager.SubmitAnswerFromVision('X');
+                        }
+                        // 동점인 경우 아무것도 하지 않음 (혹은 특정 로직 추가 가능)
+                    }
                 }
             }
         }
