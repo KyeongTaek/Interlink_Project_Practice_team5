@@ -4,12 +4,15 @@
 // license that can be found in the LICENSE file or at
 // https://opensource.org/licenses/MIT.
 
+using System; // Action을 사용하기 위해 추가
 using System.Collections;
+using System.Collections.Concurrent; // ConcurrentQueue를 사용하기 위해 추가
 using System.Collections.Generic;
 using Mediapipe;
 using Mediapipe.Tasks.Vision.HandLandmarker;
 using Mediapipe.Tasks.Components.Containers;
 using UnityEngine;
+using UnityEngine.Events;
 using UnityEngine.Rendering;
 
 namespace Mediapipe.Unity.Sample.HandLandmarkDetection
@@ -17,6 +20,12 @@ namespace Mediapipe.Unity.Sample.HandLandmarkDetection
     public class HandLandmarkerRunner : VisionTaskApiRunner<HandLandmarker>
     {
         [SerializeField] private HandLandmarkerResultAnnotationController _handLandmarkerResultAnnotationController;
+
+        public UnityEvent OnSwipeGesture;
+        public UnityEvent OnFistGesture;
+
+        // 메인 스레드에서 실행할 작업을 저장하는 큐
+        private readonly ConcurrentQueue<Action> _mainThreadActions = new ConcurrentQueue<Action>();
 
         private Experimental.TextureFramePool _textureFramePool;
 
@@ -37,6 +46,15 @@ namespace Mediapipe.Unity.Sample.HandLandmarkDetection
         private long _fistHoldThresholdTicks = 2000000; // 0.1초 = 1,000,000 Ticks
         private bool _isFistState = false;
         // =================================================================
+
+        private void Update()
+        {
+            // 큐에 작업이 있으면 하나씩 꺼내서 메인 스레드에서 실행
+            while (_mainThreadActions.TryDequeue(out var action))
+            {
+                action.Invoke();
+            }
+        }
 
         public override void Stop()
         {
@@ -193,6 +211,8 @@ namespace Mediapipe.Unity.Sample.HandLandmarkDetection
                             if (!_isFistState)
                             {
                                 Debug.Log("0 (주먹 확정)");
+                                // 직접 호출하는 대신, 메인 스레드 큐에 작업을 추가
+                                _mainThreadActions.Enqueue(() => OnFistGesture?.Invoke());
                                 _isFistState = true;
                             }
                         }
@@ -236,7 +256,7 @@ namespace Mediapipe.Unity.Sample.HandLandmarkDetection
 
                     // [수정 후] 비율대로 계산하되, 최소 0.08 (혹은 0.008) 밑으로는 내려가지 않게 방어
                     // 만약 의도가 0.008이었다면 0.08f 자리에 0.008f를 넣으세요.
-                    float dynamicThreshold = Mathf.Max(handSize * _swipeHandSizeRatio, 0.0135f);
+                    float dynamicThreshold = Mathf.Max(handSize * _swipeHandSizeRatio, 0.014f);
 
                     // (디버깅용: 감도가 어떻게 변하는지 궁금하면 주석 풀고 확인)
                     // Debug.Log($"손크기: {handSize:F4} / 감도: {dynamicThreshold:F4}");
@@ -247,6 +267,8 @@ namespace Mediapipe.Unity.Sample.HandLandmarkDetection
                     if (movement > dynamicThreshold && (currentTicks - _lastSwipeTimeTicks > _swipeCooldownTicks))
                     {
                         Debug.Log($"1 (스와이프 성공 - 감도: {dynamicThreshold:F4})");
+                        // 직접 호출하는 대신, 메인 스레드 큐에 작업을 추가
+                        _mainThreadActions.Enqueue(() => OnSwipeGesture?.Invoke());
                         _lastSwipeTimeTicks = currentTicks;
                     }
 
