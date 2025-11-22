@@ -20,8 +20,7 @@ public class QuizDB
             {
                 // [핵심 변경] WHERE 절을 추가하여 특정 scenario_id만 가져옵니다.
                 // question_id와 content를 가져와서 KeyValuePair로 만듭니다.
-                cmd.CommandText = "SELECT question_id, content FROM Question WHERE scenario_id = " + targetScenarioId;
-
+                cmd.CommandText = "SELECT question_id, content FROM Question WHERE scenario_id = " + targetScenarioId + " ORDER BY RANDOM()";
                 using (IDataReader reader = cmd.ExecuteReader())
                 {
                     while (reader.Read())

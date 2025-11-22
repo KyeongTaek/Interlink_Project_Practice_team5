@@ -1410,8 +1410,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: -615, y: 287}
-  m_SizeDelta: {x: 300, y: 300}
+  m_AnchoredPosition: {x: 147.5779, y: 357.36478}
+  m_SizeDelta: {x: 1204.4554, y: 200.7974}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1033598802
 MonoBehaviour:
@@ -1460,13 +1460,13 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 36
-  m_fontSizeBase: 36
+  m_fontSize: 66
+  m_fontSizeBase: 66
   m_fontWeight: 400
   m_enableAutoSizing: 0
   m_fontSizeMin: 18
   m_fontSizeMax: 72
-  m_fontStyle: 0
+  m_fontStyle: 1
   m_HorizontalAlignment: 1
   m_VerticalAlignment: 256
   m_textAlignment: 65535
@@ -1973,6 +1973,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::QuizManager
   questionText: {fileID: 1033598802}
+  targetScenarioId: 3
 --- !u!4 &1500503147
 Transform:
   m_ObjectHideFlags: 0
