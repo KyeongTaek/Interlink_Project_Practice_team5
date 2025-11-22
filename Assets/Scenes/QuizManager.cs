@@ -82,9 +82,23 @@ public class QuizManager : MonoBehaviour
             }
         }
 
-        // --- (테스트용 자동 채점 로직 - 나중에 버튼 연결 시 이동 필요) ---
-        submitAnswer = 'O';
-        CheckAnswer(currentQID, submitAnswer);
+        // --- [제거] 테스트용 자동 채점 로직 ---
+        // submitAnswer = 'O';
+        // CheckAnswer(currentQID, submitAnswer);
+    }
+
+    // [추가] PythonConnector가 호출할 답변 제출 및 채점 함수
+    public void SubmitAnswerFromVision(char answer)
+    {
+        submitAnswer = answer;
+        int currentQID = questions[currentIndex].Key;
+
+        Debug.Log($"비전 인식으로 답변 '{submitAnswer}' 제출됨. 채점을 시작합니다.");
+        bool isCorrect = CheckAnswer(currentQID, submitAnswer);
+        Debug.Log("채점 결과: " + (isCorrect ? "정답" : "오답"));
+
+        // 채점 결과를 DB에 기록
+        InsertLog(isCorrect, currentQID);
     }
 
     // 응답 결과와 정답 비교하는 함수
