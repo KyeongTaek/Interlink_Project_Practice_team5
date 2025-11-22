@@ -42,8 +42,23 @@ EditorBuildSettings:
     path: Assets/Video/Stage2.unity
     guid: 6e95ee7ae5c5b344cab582b3a4a5b6f1
   - enabled: 1
-    path: Assets/Video/Scene2.unity
+    path: Assets/Video/Stage2_next.unity
     guid: 842ae3c2a47fe4a43b5b8650830e14ba
+  - enabled: 1
+    path: Assets/Video/Stage2_1.unity
+    guid: 3ee430e9b07030248890eb3411137226
+  - enabled: 1
+    path: Assets/Video/Stage2_2.unity
+    guid: e26fdb01cf2f8f74b93d020022a64126
+  - enabled: 1
+    path: Assets/Video/Stage2_next1.unity
+    guid: 492c3b63019115e479087e2470a4122b
+  - enabled: 1
+    path: Assets/Video/Stage2_3.unity
+    guid: bb466c9687a0e5d4a8fe4758ea063288
+  - enabled: 1
+    path: Assets/Video/Stage2_next2.unity
+    guid: d8bdfab77a641c84e973c9c1e3145daa
   m_configObjects:
     com.unity.input.settings.actions: {fileID: -944628639613478452, guid: 2bcd2660ca9b64942af0de543d8d7100, type: 3}
   m_UseUCBPForAssetBundles: 0
