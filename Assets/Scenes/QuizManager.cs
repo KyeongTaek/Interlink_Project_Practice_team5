@@ -7,7 +7,7 @@ using Mono.Data.Sqlite;
 public class QuizManager : MonoBehaviour
 {
     public TMP_Text questionText;
-
+    public int targetScenarioId = 1;
     private List<KeyValuePair<int, string>> questions;
     private int currentIndex = 0;  // 현재 문제 번호
 
@@ -16,7 +16,8 @@ public class QuizManager : MonoBehaviour
     void Start()
     {
         QuizDB db = new QuizDB();
-        questions = db.LoadQuestions();
+
+        questions = db.LoadQuestions(targetScenarioId);
 
         if (questions.Count > 0)
         {
@@ -24,7 +25,7 @@ public class QuizManager : MonoBehaviour
         }
         else
         {
-            questionText.text = "문제가 없습니다.";
+            questionText.text = "해당 시나리오에 문제가 없습니다.";
         }
     }
 
