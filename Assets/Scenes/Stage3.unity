@@ -129,6 +129,7 @@ GameObject:
   m_Component:
   - component: {fileID: 154074722}
   - component: {fileID: 154074721}
+  - component: {fileID: 154074723}
   m_Layer: 0
   m_Name: Video Player
   m_TagString: Untagged
@@ -187,6 +188,21 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &154074723
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 154074720}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7f16b14c157935c44a4b8ecadd2e25fa, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::VideoEndHandler
+  aiManager: {fileID: 1837169881}
+  schedulerManager: {fileID: 470549588}
+  videoPanel: {fileID: 1205285382}
 --- !u!1 &172690848
 GameObject:
   m_ObjectHideFlags: 0
@@ -510,7 +526,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &470549589
 Transform:
   m_ObjectHideFlags: 0
@@ -2307,8 +2323,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 12.8289, y: 5.9212}
-  m_SizeDelta: {x: 1920, y: 1080}
+  m_AnchoredPosition: {x: -1.0441, y: 1.1805}
+  m_SizeDelta: {x: 2041.063, y: 1203.6389}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1428664537
 MonoBehaviour:
@@ -2558,7 +2574,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &1837169882
 Transform:
   m_ObjectHideFlags: 0
