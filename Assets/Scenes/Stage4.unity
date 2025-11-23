@@ -1596,8 +1596,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 1.178, y: 347}
-  m_SizeDelta: {x: 1476.3483, y: 203.721}
+  m_AnchoredPosition: {x: 93.822044, y: 347}
+  m_SizeDelta: {x: 1291.0602, y: 203.721}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1033598802
 MonoBehaviour:
@@ -2353,6 +2353,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d443e0a6a22819544812f54ca30cbb0c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::QuizManager
+  resultButtonObj: {fileID: 0}
+  resultButtonImage: {fileID: 0}
+  CorrectSprite: {fileID: 0}
+  IncorrectSprite: {fileID: 0}
+  isCorrect: 0
   questionImageView: {fileID: 1742559744}
   questionText: {fileID: 1033598802}
   targetScenarioId: 3
